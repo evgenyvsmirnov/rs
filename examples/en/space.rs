@@ -114,11 +114,11 @@ do (215 times) (
                 lines (
                     (_x, _y)
                     (_x + 10 / _scale, _y - 18 / _scale)
-                    (_x + 19 / _scale, _y - 5 / _scale)
-                    (_x + 16 / _scale, _y + 7 / _scale)
+                    (_x + (19 + _fluctuation) / _scale, _y - 5 / _scale)
+                    (_x + 16 / _scale, _y + (7 + _fluctuation) / _scale)
                     (_x + 30 / _scale, _y + 20 / _scale)
                     (_x + 15 / _scale, _y + 30 / _scale)
-                    (_x - 5 / _scale, _y + 15 / _scale)
+                    (_x - 5 / _scale, _y + (15 - _fluctuation) / _scale)
                     (_x, _y + 10 / _scale)
                     rotate _rotate
                 )
