@@ -1,0 +1,16 @@
+#---------------------
+# Text files
+#---------------------
+*.txt text
+*.java text
+*.rs text
+*.cmd text
+*.sh text
+*.g4 text
+*.xml text
+LICENSE text
+README.md text
+#---------------------
+# Binary files
+#---------------------
+*.png binary
