@@ -289,7 +289,7 @@ We're done with RS in its current state. Hope your child will write a new «unic
 frankly, but it definitely can be the first step towards, and what will happen for sure they will experience
 that magic filling when words and figures change into fancy cars and robots, stars, planets and rockets or whatever 
 else you and your kids keen on.
----
+
 So this intro covers all of RS's features available by now. As you might notice syntax may vary, notably it is possible 
 to write the same instructions with or without some keywords and tradeoff either clarity or conciseness. Poke around 
 the grammar to convey it to your child, however «monkey see monkey do» approach will also work – just speed through 
