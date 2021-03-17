@@ -28,7 +28,7 @@ LIGHT_BLUE: 'light-blue' ;
 DARK_RED: 'dark-red' ;
 CREAM: 'cream';
 CORNFLOWER: 'cornflower' ;
-TARDIS: 'tardis' ;
+TARDIS: 'tardis-blue' ;
 
 DO: 'do' ;
 UNION: 'union' ;

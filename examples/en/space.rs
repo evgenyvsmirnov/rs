@@ -418,7 +418,7 @@ rotate area (310) (
 rotate area (8) (
     with randoms (_x in set(970), _y in set (545)) (
         ; Silhouette
-        draw (tardis) (
+        draw (tardis-blue) (
             lines (
                 (_x - 30, _y + 10)
                 (_x - 30, _y + 13)

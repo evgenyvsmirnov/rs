@@ -10,7 +10,7 @@ do (2000 times) (
         draw (random (in set (
                         red, green, black, blue, pink, white, cyan, gray, orange, yellow, magenta,
                         olive, lime, night, claret, gold, violet, bright-pink, pink-violet,
-                        dark-brown, light-brown, light-blue, dark-red, cream, cornflower, tardis))) (
+                        dark-brown, light-brown, light-blue, dark-red, cream, cornflower, tardis-blue))) (
             ovals (
                 ((_x, _y) 40 x 15 rotate _r)
             )
