@@ -85,6 +85,7 @@ draw (orange, 1) (
 )
 
 ```
+
 By the way it has brought us another glitch: the necessity of explanation what variables are, but we must persevere! 
 I couldn't for the life of me to convey it until it dawned on me that the bad thing is that a variable is an intangible 
 asset, therefore needs to be materialized first. A plastic cube and a marker pen could help by the way.
@@ -174,6 +175,7 @@ rotate area (35) (
     )
 )
 ```
+
 So you just need to surround a block of code with a «rotate area (35) ( … )» instruction – and here, by the way, a new 
 brilliant piece of knowledge has rocked up («angle» I mean).
 
