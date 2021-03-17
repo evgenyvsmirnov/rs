@@ -22,10 +22,8 @@ import rs.vm.RSParser.ExprContext;
 import rs.vm.RSParser.OfSetContext;
 import rs.vm.interpreter.InterpreterBase;
 
-abstract class RndIntSetInterpreterBase extends InterpreterBase
-{
-    protected final IntResult interpretInternal(OfSetContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor)
-    {
+abstract class RndIntSetInterpreterBase extends InterpreterBase {
+    protected final IntResult interpretInternal(OfSetContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor) {
         final List<ExprContext> exprs = ctx.expr();
 
         List<Integer> intsToChoose = new ArrayList<>(exprs.size());

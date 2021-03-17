@@ -19,10 +19,8 @@ import rs.vm.RSParser.OfRangeContext;
 import rs.vm.RsSemanticsException;
 import rs.vm.interpreter.InterpreterBase;
 
-abstract class RndIntRangeInterpreterBase extends InterpreterBase
-{
-    protected final IntResult interpretInternal(OfRangeContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor)
-    {
+abstract class RndIntRangeInterpreterBase extends InterpreterBase {
+    protected final IntResult interpretInternal(OfRangeContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor) {
         int from = evaluateInt(ctx.expr(0), visitor);
         int to = evaluateInt(ctx.expr(1), visitor);
 

@@ -14,8 +14,7 @@ package rs.vm;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public interface ICodeBlockInterpreter<T extends ParserRuleContext, R>
-{
+public interface ICodeBlockInterpreter<T extends ParserRuleContext, R> {
     boolean matches(T ctx);
 
     R interpret(T ctx, DrawFrames frames, RSBaseVisitor<Object> visitor);

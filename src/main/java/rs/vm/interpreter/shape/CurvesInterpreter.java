@@ -37,32 +37,26 @@ import rs.vm.interpreter.InterpreterBase;
  *     )
  * </pre>
  */
-public class CurvesInterpreter extends InterpreterBase implements ICodeBlockInterpreter<CurvesContext, ShapeResult>
-{
+public class CurvesInterpreter extends InterpreterBase implements ICodeBlockInterpreter<CurvesContext, ShapeResult> {
     private static final CurvesInterpreter INSTANCE = new CurvesInterpreter();
 
-    public static CurvesInterpreter instance()
-    {
+    public static CurvesInterpreter instance() {
         return INSTANCE;
     }
 
-    private CurvesInterpreter()
-    {
+    private CurvesInterpreter() {
     }
 
     @Override
-    public boolean matches(CurvesContext ctx)
-    {
+    public boolean matches(CurvesContext ctx) {
         return true;
     }
 
     @Override
-    public ShapeResult interpret(CurvesContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor)
-    {
+    public ShapeResult interpret(CurvesContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor) {
         final List<ShapeWithContext> shapes = new ArrayList<>();
 
-        for (int i = 0; i < ctx.curve().size(); i++)
-        {
+        for (int i = 0; i < ctx.curve().size(); i++) {
             CurveContext curveContext = ctx.curve().get(i);
 
             Point fromPoint = evaluatePointFromExpressionOrRandom(curveContext.shapeCoord(0), visitor);
@@ -73,15 +67,13 @@ public class CurvesInterpreter extends InterpreterBase implements ICodeBlockInte
 
             QuadCurve2D.Double shape = new QuadCurve2D.Double(
                     fromPoint.x, fromPoint.y, towardsPoint.x, towardsPoint.y, toPoint.x, toPoint.y);
-            if (!frames.modeUnion() && !frames.modeRepeat())
-            {
+            if (!frames.modeUnion() && !frames.modeRepeat()) {
                 frames.g2d().setColor(frames.brushColor());
                 frames.g2d().setStroke(
                         new BasicStroke(frames.brushThickness(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
-                if (rotate > 0)
-                {
-                    Graphics2D g2dRotate = (Graphics2D)frames.g2d().create();
+                if (rotate > 0) {
+                    Graphics2D g2dRotate = (Graphics2D) frames.g2d().create();
 
                     g2dRotate.rotate(Math.toRadians(rotate), shape.getBounds().getCenterX(),
                             shape.getBounds().getCenterY());
@@ -91,9 +83,7 @@ public class CurvesInterpreter extends InterpreterBase implements ICodeBlockInte
                         g2dRotate.draw(shape);
 
                     g2dRotate.dispose();
-                }
-                else
-                {
+                } else {
                     if (frames.brushFill())
                         frames.g2d().fill(shape);
                     else
@@ -106,7 +96,7 @@ public class CurvesInterpreter extends InterpreterBase implements ICodeBlockInte
                     frames.brushColor(), frames.brushThickness(), frames.brushFill(),
                     rotate > 0
                             ? new ShapeRotationContext(
-                                    rotate, shape.getBounds2D().getCenterX(), shape.getBounds2D().getCenterY())
+                            rotate, shape.getBounds2D().getCenterX(), shape.getBounds2D().getCenterY())
                             : null));
         }
 

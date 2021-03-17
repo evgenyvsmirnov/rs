@@ -39,28 +39,23 @@ import rs.vm.RSParser.RndDefCoordContext;
  * </pre>
  */
 public class VarRndShapesUnionInterpreter extends RndShapesUnionInterpreterBase
-        implements ICodeBlockInterpreter<RndDefCoordContext, Void>
-{
+        implements ICodeBlockInterpreter<RndDefCoordContext, Void> {
     private static final VarRndShapesUnionInterpreter INSTANCE = new VarRndShapesUnionInterpreter();
 
-    public static VarRndShapesUnionInterpreter instance()
-    {
+    public static VarRndShapesUnionInterpreter instance() {
         return INSTANCE;
     }
 
-    private VarRndShapesUnionInterpreter()
-    {
+    private VarRndShapesUnionInterpreter() {
     }
 
     @Override
-    public boolean matches(RndDefCoordContext ctx)
-    {
+    public boolean matches(RndDefCoordContext ctx) {
         return true;
     }
 
     @Override
-    public Void interpret(RndDefCoordContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor)
-    {
+    public Void interpret(RndDefCoordContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor) {
         final String xVar = ctx.coordDef().VAR(0).getText();
         final String yVar = ctx.coordDef().VAR(1).getText();
 

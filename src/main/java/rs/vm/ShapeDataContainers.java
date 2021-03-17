@@ -15,45 +15,37 @@ package rs.vm;
 import java.awt.Color;
 import java.awt.Shape;
 
-public final class ShapeDataContainers
-{
-    private ShapeDataContainers()
-    {
+public final class ShapeDataContainers {
+    private ShapeDataContainers() {
     }
 
-    public static class ShapeRotationContext
-    {
+    public static class ShapeRotationContext {
         private final int angle;
 
         private final double centerX;
         private final double centerY;
 
-        public ShapeRotationContext(int angle, double centerX, double centerY)
-        {
+        public ShapeRotationContext(int angle, double centerX, double centerY) {
             this.angle = angle;
 
             this.centerX = centerX;
             this.centerY = centerY;
         }
 
-        public int angle()
-        {
+        public int angle() {
             return angle;
         }
 
-        public double centerX()
-        {
+        public double centerX() {
             return centerX;
         }
 
-        public double centerY()
-        {
+        public double centerY() {
             return centerY;
         }
     }
 
-    public static class ShapeWithContext
-    {
+    public static class ShapeWithContext {
         private final Shape shape;
 
         private final Color color;
@@ -62,8 +54,7 @@ public final class ShapeDataContainers
 
         private final ShapeRotationContext rotation;
 
-        public ShapeWithContext(Shape shape, Color color, int thickness, boolean fill, ShapeRotationContext rotation)
-        {
+        public ShapeWithContext(Shape shape, Color color, int thickness, boolean fill, ShapeRotationContext rotation) {
             this.color = color;
             this.thickness = thickness;
             this.fill = fill;
@@ -71,72 +62,59 @@ public final class ShapeDataContainers
             this.shape = shape;
         }
 
-        public Shape shape()
-        {
+        public Shape shape() {
             return shape;
         }
 
-        public Color color()
-        {
+        public Color color() {
             return color;
         }
 
-        public int thickness()
-        {
+        public int thickness() {
             return thickness;
         }
 
-        public boolean fill()
-        {
+        public boolean fill() {
             return fill;
         }
 
-        public ShapeRotationContext rotation()
-        {
+        public ShapeRotationContext rotation() {
             return rotation;
         }
     }
 
-    public static class WidthHeight
-    {
+    public static class WidthHeight {
         private final int width;
         private final int height;
 
-        public WidthHeight(int width, int height)
-        {
+        public WidthHeight(int width, int height) {
             this.width = width;
             this.height = height;
         }
 
-        public int width()
-        {
+        public int width() {
             return width;
         }
 
-        public int height()
-        {
+        public int height() {
             return height;
         }
     }
 
-    public static class Sector
-    {
+    public static class Sector {
         private final int startAngle;
         private final int length;
 
-        public Sector(int startAngle, int length)
-        {
+        public Sector(int startAngle, int length) {
             this.startAngle = startAngle;
             this.length = length;
         }
 
-        public int startAngle()
-        {
+        public int startAngle() {
             return startAngle;
         }
 
-        public int length()
-        {
+        public int length() {
             return length;
         }
     }

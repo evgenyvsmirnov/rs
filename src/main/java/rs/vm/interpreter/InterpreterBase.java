@@ -38,40 +38,31 @@ import rs.vm.ShapeDataContainers.Sector;
 import rs.vm.ShapeDataContainers.ShapeWithContext;
 import rs.vm.ShapeDataContainers.WidthHeight;
 
-public abstract class InterpreterBase
-{
-    protected final int evaluateInt(ExprContext expr, RSBaseVisitor<Object> visitor)
-    {
-        return ((IntResult)visitor.visit(expr)).value();
+public abstract class InterpreterBase {
+    protected final int evaluateInt(ExprContext expr, RSBaseVisitor<Object> visitor) {
+        return ((IntResult) visitor.visit(expr)).value();
     }
 
-    protected final List<ShapeWithContext> evaluateShapes(ParserRuleContext ctx, RSBaseVisitor<Object> visitor)
-    {
-        return ((ShapeResult)visitor.visit(ctx)).shapes();
+    protected final List<ShapeWithContext> evaluateShapes(ParserRuleContext ctx, RSBaseVisitor<Object> visitor) {
+        return ((ShapeResult) visitor.visit(ctx)).shapes();
     }
 
-    protected final int evaluateRandomInt(InlineRndContext ctx, RSBaseVisitor<Object> visitor)
-    {
-        return ((IntResult)visitor.visit(ctx)).value();
+    protected final int evaluateRandomInt(InlineRndContext ctx, RSBaseVisitor<Object> visitor) {
+        return ((IntResult) visitor.visit(ctx)).value();
     }
 
-    protected final Color evaluateRandomColor(InlineRndContext ctx, RSBaseVisitor<Object> visitor)
-    {
-        return ((ColorResult)visitor.visit(ctx)).color();
+    protected final Color evaluateRandomColor(InlineRndContext ctx, RSBaseVisitor<Object> visitor) {
+        return ((ColorResult) visitor.visit(ctx)).color();
     }
 
     protected final Point evaluatePointFromExpressionOrRandom(ShapeCoordContext shapeCoordContext,
-            RSBaseVisitor<Object> visitor)
-    {
-        if (shapeCoordContext.coord() != null)
-        {
+                                                              RSBaseVisitor<Object> visitor) {
+        if (shapeCoordContext.coord() != null) {
             int x = evaluateInt(shapeCoordContext.coord().expr(0), visitor);
             int y = evaluateInt(shapeCoordContext.coord().expr(1), visitor);
 
             return new Point(x, y);
-        }
-        else if (shapeCoordContext.inlineRnd() != null)
-        {
+        } else if (shapeCoordContext.inlineRnd() != null) {
             if (shapeCoordContext.inlineRnd().rndDefNoVar() == null)
                 throw new RsSyntaxException("A random definition can't have body at this position.",
                         shapeCoordContext.inlineRnd().rndDefNoVar().getStart());
@@ -80,27 +71,21 @@ public abstract class InterpreterBase
                 throw new RsSyntaxException("A random definition must comprise at least one shape.",
                         shapeCoordContext.inlineRnd().rndDefNoVar().doUnion().getStart());
 
-            CordsResult coordsResult = (CordsResult)visitor.visit(shapeCoordContext.inlineRnd());
+            CordsResult coordsResult = (CordsResult) visitor.visit(shapeCoordContext.inlineRnd());
             int x = coordsResult.x();
             int y = coordsResult.y();
 
             return new Point(x, y);
-        }
-        else
-        {
+        } else {
             throw new RsSyntaxException("Unknown coordinate definition.", shapeCoordContext.coord().getStart());
         }
     }
 
-    protected final int evaluateShapeSizeFromExpressionOrRandom(ShapeSizeContext ctx, RSBaseVisitor<Object> visitor)
-    {
+    protected final int evaluateShapeSizeFromExpressionOrRandom(ShapeSizeContext ctx, RSBaseVisitor<Object> visitor) {
         int size;
-        if (ctx.expr() != null)
-        {
+        if (ctx.expr() != null) {
             size = evaluateInt(ctx.expr(), visitor);
-        }
-        else if (ctx.inlineRnd() != null)
-        {
+        } else if (ctx.inlineRnd() != null) {
             if (ctx.inlineRnd().rndDefNoVar() == null)
                 throw new RsSyntaxException("A random definition can't have body at this position.",
                         ctx.inlineRnd().rndDefNoVar().getStart());
@@ -110,32 +95,25 @@ public abstract class InterpreterBase
                         ctx.inlineRnd().rndDefNoVar().getStart());
 
             size = evaluateRandomInt(ctx.inlineRnd(), visitor);
-        }
-        else
-        {
+        } else {
             throw new RsSyntaxException("Unsupported shape size definition.", ctx.getStart());
         }
 
-        if (size <= 0)
-        {
+        if (size <= 0) {
             throw new RsSemanticsException("Shape size must be positive", ctx.getStart());
         }
 
         return size;
     }
 
-    protected final int evaluateRotationAngleFromExprOrRandom(RotateShapeContext ctx, RSBaseVisitor<Object> visitor)
-    {
+    protected final int evaluateRotationAngleFromExprOrRandom(RotateShapeContext ctx, RSBaseVisitor<Object> visitor) {
         if (ctx == null || ctx.shapeSize() == null)
             return 0;
 
         final ShapeSizeContext shapeSize = ctx.shapeSize();
-        if (shapeSize.expr() != null)
-        {
+        if (shapeSize.expr() != null) {
             return evaluateInt(shapeSize.expr(), visitor);
-        }
-        else if (shapeSize.inlineRnd() != null)
-        {
+        } else if (shapeSize.inlineRnd() != null) {
             if (shapeSize.inlineRnd().rndDefNoVar() == null)
                 throw new RsSyntaxException("A random definition can't have body at this position.",
                         shapeSize.inlineRnd().rndDefNoVar().getStart());
@@ -145,25 +123,18 @@ public abstract class InterpreterBase
                         shapeSize.inlineRnd().rndDefNoVar().getStart());
 
             return evaluateRandomInt(shapeSize.inlineRnd(), visitor);
-        }
-        else
-        {
+        } else {
             throw new RsSyntaxException("Unsupported rotation angle definition.", ctx.getStart());
         }
     }
 
-    protected final WidthHeight evaluateShapeSize2FromExprOrRandom(ShapeSize2Context ctx, RSBaseVisitor<Object> visitor)
-    {
+    protected final WidthHeight evaluateShapeSize2FromExprOrRandom(ShapeSize2Context ctx, RSBaseVisitor<Object> visitor) {
         int[] widthHeight = new int[2];
-        for (int j = 0; j < 2; j++)
-        {
+        for (int j = 0; j < 2; j++) {
             ShapeSizeContext shapeSize = ctx.shapeSize(j);
-            if (shapeSize.expr() != null)
-            {
-                widthHeight[j] = ((IntResult)visitor.visit(shapeSize.expr())).value();
-            }
-            else if (shapeSize.inlineRnd() != null)
-            {
+            if (shapeSize.expr() != null) {
+                widthHeight[j] = ((IntResult) visitor.visit(shapeSize.expr())).value();
+            } else if (shapeSize.inlineRnd() != null) {
                 if (shapeSize.inlineRnd().rndDefNoVar() == null)
                     throw new RsSyntaxException("A random definition can't have body at this position.",
                             shapeSize.inlineRnd().rndDefNoVar().getStart());
@@ -172,11 +143,9 @@ public abstract class InterpreterBase
                     throw new RsSyntaxException("A random value must be chosen from a set or a range.",
                             shapeSize.inlineRnd().rndDefNoVar().getStart());
 
-                IntResult intResult = (IntResult)visitor.visit(shapeSize.inlineRnd());
+                IntResult intResult = (IntResult) visitor.visit(shapeSize.inlineRnd());
                 widthHeight[j] = intResult.value();
-            }
-            else
-            {
+            } else {
                 throw new RsSyntaxException("Unsupported shape size definition.", ctx.getStart());
             }
         }
@@ -187,23 +156,18 @@ public abstract class InterpreterBase
         return new WidthHeight(widthHeight[0], widthHeight[1]);
     }
 
-    protected final Sector evaluateSectorFromExprOrRandom(SectorContext ctx, RSBaseVisitor<Object> visitor)
-    {
+    protected final Sector evaluateSectorFromExprOrRandom(SectorContext ctx, RSBaseVisitor<Object> visitor) {
         if (ctx == null)
             return new Sector(0, 360);
 
         List<ShapeSizeContext> shapeSizes = ctx.shapeSize();
 
         int[] startLength = new int[2];
-        for (int i = 0; i != 2; i++)
-        {
+        for (int i = 0; i != 2; i++) {
             final ShapeSizeContext shapeSize = shapeSizes.get(i);
-            if (shapeSize.expr() != null)
-            {
+            if (shapeSize.expr() != null) {
                 startLength[i] = evaluateInt(shapeSize.expr(), visitor);
-            }
-            else if (shapeSize.inlineRnd() != null)
-            {
+            } else if (shapeSize.inlineRnd() != null) {
                 if (shapeSize.inlineRnd().rndDefNoVar() == null)
                     throw new RsSyntaxException("A random definition can't have body at this position.",
                             shapeSize.inlineRnd().rndDefNoVar().getStart());
@@ -213,9 +177,7 @@ public abstract class InterpreterBase
                             shapeSize.inlineRnd().rndDefNoVar().getStart());
 
                 startLength[i] = evaluateRandomInt(shapeSize.inlineRnd(), visitor);
-            }
-            else
-            {
+            } else {
                 throw new RsSyntaxException("Unsupported shape size definition.", shapeSize.getStart());
             }
         }
@@ -223,14 +185,12 @@ public abstract class InterpreterBase
         return new Sector(startLength[0], startLength[1]);
     }
 
-    protected final Rectangle2D getBoundaryRectangle(ShapeResult result, ParserRuleContext ctx)
-    {
+    protected final Rectangle2D getBoundaryRectangle(ShapeResult result, ParserRuleContext ctx) {
         if (result.shapes().size() == 0)
             throw new RsSyntaxException("No shapes found for a random coordinates source.", ctx.getStart());
 
         Rectangle2D union = null;
-        for (int i = 0; i < result.shapes().size(); i++)
-        {
+        for (int i = 0; i < result.shapes().size(); i++) {
             if (union == null)
                 union = result.shapes().get(i).shape().getBounds2D();
             else
@@ -240,8 +200,7 @@ public abstract class InterpreterBase
         return union;
     }
 
-    protected final Color mapColor(ColorContext ctx)
-    {
+    protected final Color mapColor(ColorContext ctx) {
         if (ctx.RED() != null)
             return Color.RED;
         else if (ctx.GREEN() != null)

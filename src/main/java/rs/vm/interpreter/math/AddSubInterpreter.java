@@ -20,28 +20,23 @@ import rs.vm.RSParser;
 import rs.vm.RSParser.AddSubContext;
 import rs.vm.interpreter.InterpreterBase;
 
-public class AddSubInterpreter extends InterpreterBase implements ICodeBlockInterpreter<AddSubContext, IntResult>
-{
+public class AddSubInterpreter extends InterpreterBase implements ICodeBlockInterpreter<AddSubContext, IntResult> {
     private static final AddSubInterpreter INSTANCE = new AddSubInterpreter();
 
-    public static AddSubInterpreter instance()
-    {
+    public static AddSubInterpreter instance() {
         return INSTANCE;
     }
 
-    private AddSubInterpreter()
-    {
+    private AddSubInterpreter() {
     }
 
     @Override
-    public boolean matches(AddSubContext ctx)
-    {
+    public boolean matches(AddSubContext ctx) {
         return true;
     }
 
     @Override
-    public IntResult interpret(AddSubContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor)
-    {
+    public IntResult interpret(AddSubContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor) {
         int left = evaluateInt(ctx.expr(0), visitor);
         int right = evaluateInt(ctx.expr(1), visitor);
 

@@ -22,10 +22,8 @@ import rs.vm.RSParser.ColorContext;
 import rs.vm.RSParser.OfSetContext;
 import rs.vm.interpreter.InterpreterBase;
 
-abstract class RndColorInterpreterBase extends InterpreterBase
-{
-    protected final ColorResult interpretInternal(OfSetContext ctx, DrawFrames frames)
-    {
+abstract class RndColorInterpreterBase extends InterpreterBase {
+    protected final ColorResult interpretInternal(OfSetContext ctx, DrawFrames frames) {
         List<Color> colorsToChoose = new ArrayList<>(ctx.color().size());
         for (ColorContext colorToChoose : ctx.color())
             colorsToChoose.add(mapColor(colorToChoose));

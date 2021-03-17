@@ -26,28 +26,23 @@ import rs.vm.RSParser.InlineRndContext;
  * </pre>
  */
 public class InlineRndIntRangeInterpreter extends RndIntRangeInterpreterBase
-        implements ICodeBlockInterpreter<InlineRndContext, IntResult>
-{
+        implements ICodeBlockInterpreter<InlineRndContext, IntResult> {
     private static final InlineRndIntRangeInterpreter INSTANCE = new InlineRndIntRangeInterpreter();
 
-    public static InlineRndIntRangeInterpreter instance()
-    {
+    public static InlineRndIntRangeInterpreter instance() {
         return INSTANCE;
     }
 
-    private InlineRndIntRangeInterpreter()
-    {
+    private InlineRndIntRangeInterpreter() {
     }
 
     @Override
-    public boolean matches(InlineRndContext ctx)
-    {
+    public boolean matches(InlineRndContext ctx) {
         return ctx.rndDefNoVar().ofRange() != null;
     }
 
     @Override
-    public IntResult interpret(InlineRndContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor)
-    {
+    public IntResult interpret(InlineRndContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor) {
         return interpretInternal(ctx.rndDefNoVar().ofRange(), frames, visitor);
     }
 }

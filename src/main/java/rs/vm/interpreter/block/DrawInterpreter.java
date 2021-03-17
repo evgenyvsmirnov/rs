@@ -30,78 +30,58 @@ import rs.vm.interpreter.InterpreterBase;
  * draw (green, 1) ( ... )
  * </pre>
  */
-public class DrawInterpreter extends InterpreterBase implements ICodeBlockInterpreter<DoDrawContext, ShapeResult>
-{
+public class DrawInterpreter extends InterpreterBase implements ICodeBlockInterpreter<DoDrawContext, ShapeResult> {
     private static final DrawInterpreter INSTANCE = new DrawInterpreter();
 
-    public static DrawInterpreter instance()
-    {
+    public static DrawInterpreter instance() {
         return INSTANCE;
     }
 
-    private DrawInterpreter()
-    {
+    private DrawInterpreter() {
     }
 
     @Override
-    public boolean matches(DoDrawContext ctx)
-    {
+    public boolean matches(DoDrawContext ctx) {
         return true;
     }
 
     @Override
-    public ShapeResult interpret(DoDrawContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor)
-    {
+    public ShapeResult interpret(DoDrawContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor) {
         frames.newFrame();
 
-        try
-        {
+        try {
             frames.brushColor(getColor(ctx, frames, visitor));
-            if (ctx.expr() != null)
-            {
+            if (ctx.expr() != null) {
                 frames.brushThickness(evaluateInt(ctx.expr(), visitor));
                 frames.brushFill(false);
-            }
-            else
-            {
+            } else {
                 frames.brushThickness(1);
                 frames.brushFill(true);
             }
 
             ShapeResult shapeResult = ShapeResult.create(new ArrayList<>());
-            for (StepToShapeBodyContext dbdContext : ctx.stepToShapeBody())
-            {
-                shapeResult.shapes().addAll(((ShapeResult)visitor.visit(dbdContext)).shapes());
+            for (StepToShapeBodyContext dbdContext : ctx.stepToShapeBody()) {
+                shapeResult.shapes().addAll(((ShapeResult) visitor.visit(dbdContext)).shapes());
             }
 
             return shapeResult;
-        }
-        finally
-        {
+        } finally {
             frames.disposeFrame();
         }
     }
 
-    private Color getColor(DoDrawContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor)
-    {
-        if (ctx.drawColor().color() != null)
-        {
+    private Color getColor(DoDrawContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor) {
+        if (ctx.drawColor().color() != null) {
             return mapColor(ctx.drawColor().color());
-        }
-        else if (ctx.drawColor().VAR() != null)
-        {
+        } else if (ctx.drawColor().VAR() != null) {
             final Color color = frames.varColor(ctx.drawColor().VAR().getText());
             if (color == null)
                 throw new UnknownVariableException(ctx.drawColor().VAR().getText(), ctx.drawColor().VAR().getSymbol());
 
             return color;
-        }
-        else if (ctx.drawColor().inlineRnd() != null)
-        {
+        } else if (ctx.drawColor().inlineRnd() != null) {
             return evaluateRandomColor(ctx.drawColor().inlineRnd(), visitor);
-        }
-        else
-        {
+        } else {
             return Color.BLACK;
         }
     }

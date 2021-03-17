@@ -37,47 +37,39 @@ import static java.lang.Math.toRadians;
  * </pre>
  */
 public class RotateAreaInterpreter extends InterpreterBase
-        implements ICodeBlockInterpreter<RotateAreaContext, ShapeResult>
-{
+        implements ICodeBlockInterpreter<RotateAreaContext, ShapeResult> {
     private static final RotateAreaInterpreter INSTANCE = new RotateAreaInterpreter();
 
-    public static RotateAreaInterpreter instance()
-    {
+    public static RotateAreaInterpreter instance() {
         return INSTANCE;
     }
 
-    private RotateAreaInterpreter()
-    {
+    private RotateAreaInterpreter() {
     }
 
     @Override
-    public boolean matches(RotateAreaContext ctx)
-    {
+    public boolean matches(RotateAreaContext ctx) {
         return true;
     }
 
     @Override
-    public ShapeResult interpret(RotateAreaContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor)
-    {
+    public ShapeResult interpret(RotateAreaContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor) {
         ShapeResult shapeResult = ShapeResult.create(new ArrayList<>());
 
         frames.modeRepeat(true);
-        for (StepToShapeBodyContext stepToShapeBodyContext : ctx.stepToShapeBody())
-        {
-            shapeResult.shapes().addAll(((ShapeResult)visitor.visit(stepToShapeBodyContext)).shapes());
+        for (StepToShapeBodyContext stepToShapeBodyContext : ctx.stepToShapeBody()) {
+            shapeResult.shapes().addAll(((ShapeResult) visitor.visit(stepToShapeBodyContext)).shapes());
         }
         frames.modeRepeat(false);
 
         int rotate = getRotateFromExprOrRandom(visitor, ctx);
         Point boundRectangleCenter = getBoundaryRectangleCenter(shapeResult, ctx);
 
-        Graphics2D g2dRotate1 = (Graphics2D)frames.g2d().create();
+        Graphics2D g2dRotate1 = (Graphics2D) frames.g2d().create();
         g2dRotate1.rotate(toRadians(rotate), boundRectangleCenter.getX(), boundRectangleCenter.getY());
-        for (ShapeWithContext shapeWithContext : shapeResult.shapes())
-        {
-            if (shapeWithContext.rotation() != null)
-            {
-                Graphics2D g2dRotate2 = (Graphics2D)g2dRotate1.create();
+        for (ShapeWithContext shapeWithContext : shapeResult.shapes()) {
+            if (shapeWithContext.rotation() != null) {
+                Graphics2D g2dRotate2 = (Graphics2D) g2dRotate1.create();
                 g2dRotate2.setColor(shapeWithContext.color());
                 g2dRotate2.setStroke(new BasicStroke(shapeWithContext.thickness(), BasicStroke.CAP_ROUND,
                         BasicStroke.JOIN_ROUND));
@@ -91,9 +83,7 @@ public class RotateAreaInterpreter extends InterpreterBase
                     g2dRotate2.fill(shapeWithContext.shape());
 
                 g2dRotate2.dispose();
-            }
-            else
-            {
+            } else {
                 g2dRotate1.setColor(shapeWithContext.color());
                 g2dRotate1.setStroke(new BasicStroke(shapeWithContext.thickness(), BasicStroke.CAP_ROUND,
                         BasicStroke.JOIN_ROUND));
@@ -108,17 +98,13 @@ public class RotateAreaInterpreter extends InterpreterBase
         return ShapeResult.create(new ArrayList<>());
     }
 
-    private int getRotateFromExprOrRandom(RSBaseVisitor<Object> visitor, RotateAreaContext ctx)
-    {
+    private int getRotateFromExprOrRandom(RSBaseVisitor<Object> visitor, RotateAreaContext ctx) {
         if (ctx == null || ctx.expr() == null && ctx.inlineRnd() == null)
             return 0;
 
-        if (ctx.expr() != null)
-        {
+        if (ctx.expr() != null) {
             return evaluateInt(ctx.expr(), visitor);
-        }
-        else if (ctx.inlineRnd() != null)
-        {
+        } else if (ctx.inlineRnd() != null) {
             if (ctx.inlineRnd().rndDefNoVar() == null)
                 throw new RsSemanticsException("A random rotation angle definition can't have a body.",
                         ctx.inlineRnd().getStart());
@@ -128,19 +114,16 @@ public class RotateAreaInterpreter extends InterpreterBase
                         ctx.inlineRnd().rndDefNoVar().getStart());
 
             return evaluateRandomInt(ctx.inlineRnd(), visitor);
-        }
-        else
-        {
+        } else {
             throw new RsSyntaxException("Unsupported rotation angle definition: " + ctx.getText(), ctx.getStart());
         }
     }
 
-    private Point getBoundaryRectangleCenter(ShapeResult result, RotateAreaContext ctx)
-    {
+    private Point getBoundaryRectangleCenter(ShapeResult result, RotateAreaContext ctx) {
         Rectangle2D bounds2D = getBoundaryRectangle(result, ctx).getBounds2D();
 
-        int x = (int)(bounds2D.getX() + bounds2D.getWidth() / 2);
-        int y = (int)(bounds2D.getY() + bounds2D.getHeight() / 2);
+        int x = (int) (bounds2D.getX() + bounds2D.getWidth() / 2);
+        int y = (int) (bounds2D.getY() + bounds2D.getHeight() / 2);
 
         return new Point(x, y);
     }

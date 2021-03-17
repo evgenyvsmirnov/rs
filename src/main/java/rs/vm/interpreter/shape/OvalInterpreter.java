@@ -42,31 +42,25 @@ import static java.lang.Math.toRadians;
  *
  * </pre>
  */
-public class OvalInterpreter extends InterpreterBase implements ICodeBlockInterpreter<OvalContext, ShapeResult>
-{
+public class OvalInterpreter extends InterpreterBase implements ICodeBlockInterpreter<OvalContext, ShapeResult> {
     private static final OvalInterpreter INSTANCE = new OvalInterpreter();
 
-    public static OvalInterpreter instance()
-    {
+    public static OvalInterpreter instance() {
         return INSTANCE;
     }
 
-    private OvalInterpreter()
-    {
+    private OvalInterpreter() {
     }
 
     @Override
-    public boolean matches(OvalContext ctx)
-    {
+    public boolean matches(OvalContext ctx) {
         return true;
     }
 
     @Override
-    public ShapeResult interpret(OvalContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor)
-    {
+    public ShapeResult interpret(OvalContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor) {
         List<ShapeWithContext> shapes = new ArrayList<>();
-        for (int i = 0; i < ctx.shapeCoord().size(); i++)
-        {
+        for (int i = 0; i < ctx.shapeCoord().size(); i++) {
             Point center = evaluatePointFromExpressionOrRandom(ctx.shapeCoord().get(i), visitor);
             WidthHeight widthHeight = evaluateShapeSize2FromExprOrRandom(ctx.shapeSize2(i), visitor);
             Sector sector = evaluateSectorFromExprOrRandom(ctx.sector(i), visitor);
@@ -77,15 +71,13 @@ public class OvalInterpreter extends InterpreterBase implements ICodeBlockInterp
                     widthHeight.width() * 2.0, widthHeight.height() * 2.0,
                     sector.startAngle(), sector.length(),
                     Arc2D.OPEN);
-            if (!frames.modeUnion() && !frames.modeRepeat())
-            {
+            if (!frames.modeUnion() && !frames.modeRepeat()) {
                 frames.g2d().setColor(frames.brushColor());
                 frames.g2d().setStroke(
                         new BasicStroke(frames.brushThickness(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
-                if (rotate > 0)
-                {
-                    Graphics2D g2dRotate = (Graphics2D)frames.g2d().create();
+                if (rotate > 0) {
+                    Graphics2D g2dRotate = (Graphics2D) frames.g2d().create();
                     g2dRotate.rotate(toRadians(rotate), center.x, center.y);
 
                     if (frames.brushFill())
@@ -94,17 +86,13 @@ public class OvalInterpreter extends InterpreterBase implements ICodeBlockInterp
                         g2dRotate.draw(shape);
 
                     g2dRotate.dispose();
-                }
-                else
-                {
+                } else {
                     if (frames.brushFill())
                         frames.g2d().fill(shape);
                     else
                         frames.g2d().draw(shape);
                 }
-            }
-            else
-            {
+            } else {
                 if (rotate > 0 && frames.modeUnion())
                     throw new RsSemanticsException("Rotation is not allowed when shape is a part of a random definition.",
                             ctx.getStart());

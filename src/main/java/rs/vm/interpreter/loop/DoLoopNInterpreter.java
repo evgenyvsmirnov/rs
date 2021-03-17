@@ -33,35 +33,30 @@ import rs.vm.interpreter.InterpreterBase;
  * do (50 times) ( ... )
  * </pre>
  */
-public class DoLoopNInterpreter extends InterpreterBase implements ICodeBlockInterpreter<DoLoopContext, ShapeResult>
-{
+public class DoLoopNInterpreter extends InterpreterBase implements ICodeBlockInterpreter<DoLoopContext, ShapeResult> {
     private static final DoLoopNInterpreter INSTANCE = new DoLoopNInterpreter();
 
-    public static DoLoopNInterpreter instance()
-    {
+    public static DoLoopNInterpreter instance() {
         return INSTANCE;
     }
 
-    private DoLoopNInterpreter()
-    {
+    private DoLoopNInterpreter() {
     }
 
     @Override
-    public boolean matches(DoLoopContext ctx)
-    {
+    public boolean matches(DoLoopContext ctx) {
         return ctx.loopDef() != null && ctx.loopNDef() == null;
     }
 
     @Override
-    public ShapeResult interpret(DoLoopContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor)
-    {
+    public ShapeResult interpret(DoLoopContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor) {
         CodeBlockResult result;
 
         final LoopDefContext loopDef = ctx.loopDef();
         if (loopDef.expr() != null)
-            result = (CodeBlockResult)visitor.visit(loopDef.expr());
+            result = (CodeBlockResult) visitor.visit(loopDef.expr());
         else if (loopDef.inlineRnd() != null)
-            result = (CodeBlockResult)visitor.visit(loopDef.inlineRnd());
+            result = (CodeBlockResult) visitor.visit(loopDef.inlineRnd());
         else
             throw new RsSyntaxException("Unsupported loop boundary: " + loopDef.getText(), loopDef.getStart());
 
@@ -69,11 +64,9 @@ public class DoLoopNInterpreter extends InterpreterBase implements ICodeBlockInt
             throw new RsVmInternalException("Expected an integer as the loop boundary.");
 
         ShapeResult shapeResult = ShapeResult.create(new ArrayList<>());
-        for (int i = 0; i < ((IntResult)result).value(); i++)
-        {
-            for (StepToShapeBodyContext loopbodyContext : ctx.stepToShapeBody())
-            {
-                shapeResult.shapes().addAll(((ShapeResult)visitor.visit(loopbodyContext)).shapes());
+        for (int i = 0; i < ((IntResult) result).value(); i++) {
+            for (StepToShapeBodyContext loopbodyContext : ctx.stepToShapeBody()) {
+                shapeResult.shapes().addAll(((ShapeResult) visitor.visit(loopbodyContext)).shapes());
             }
         }
 

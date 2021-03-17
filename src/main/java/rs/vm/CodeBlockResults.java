@@ -17,107 +17,86 @@ import java.util.List;
 
 import rs.vm.ShapeDataContainers.ShapeWithContext;
 
-public final class CodeBlockResults
-{
-    private CodeBlockResults()
-    {
+public final class CodeBlockResults {
+    private CodeBlockResults() {
     }
 
-    public interface CodeBlockResult
-    {
+    public interface CodeBlockResult {
     }
 
-    public static class ColorResult implements CodeBlockResult
-    {
+    public static class ColorResult implements CodeBlockResult {
         private final Color color;
 
-        public static ColorResult create(Color color)
-        {
-            if (color == null)
-            {
+        public static ColorResult create(Color color) {
+            if (color == null) {
                 throw new IllegalArgumentException("color can't be null.");
             }
 
             return new ColorResult(color);
         }
 
-        private ColorResult(Color color)
-        {
+        private ColorResult(Color color) {
             this.color = color;
         }
 
-        public Color color()
-        {
+        public Color color() {
             return color;
         }
     }
 
-    public static class CordsResult implements CodeBlockResult
-    {
+    public static class CordsResult implements CodeBlockResult {
         private final int x;
         private final int y;
 
-        public static CordsResult create(int x, int y)
-        {
+        public static CordsResult create(int x, int y) {
             return new CordsResult(x, y);
         }
 
-        private CordsResult(int x, int y)
-        {
+        private CordsResult(int x, int y) {
             this.x = x;
             this.y = y;
         }
 
-        public int x()
-        {
+        public int x() {
             return x;
         }
 
-        public int y()
-        {
+        public int y() {
             return y;
         }
     }
 
-    public static class IntResult implements CodeBlockResult
-    {
+    public static class IntResult implements CodeBlockResult {
         private final int value;
 
-        public static IntResult create(int value)
-        {
+        public static IntResult create(int value) {
             return new IntResult(value);
         }
 
-        private IntResult(int value)
-        {
+        private IntResult(int value) {
             this.value = value;
         }
 
-        public int value()
-        {
+        public int value() {
             return value;
         }
     }
 
-    public static class ShapeResult implements CodeBlockResult
-    {
+    public static class ShapeResult implements CodeBlockResult {
         private final List<ShapeWithContext> shapes;
 
-        public static ShapeResult create(List<ShapeWithContext> shapes)
-        {
+        public static ShapeResult create(List<ShapeWithContext> shapes) {
             if (shapes == null)
                 throw new IllegalArgumentException("shapes can't be null.");
 
             return new ShapeResult(shapes);
         }
 
-        private ShapeResult(List<ShapeWithContext> shapes)
-        {
+        private ShapeResult(List<ShapeWithContext> shapes) {
             this.shapes = shapes;
         }
 
-        public List<ShapeWithContext> shapes()
-        {
+        public List<ShapeWithContext> shapes() {
             return shapes;
         }
     }

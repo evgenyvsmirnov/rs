@@ -19,66 +19,56 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.Random;
 
-public final class DrawFrames
-{
+public final class DrawFrames {
     private final Deque<DrawFrame> frames = new ArrayDeque<>();
     private DrawFrame currentFrame;
 
-    private DrawFrames(Graphics2D g2d)
-    {
+    private DrawFrames(Graphics2D g2d) {
         this.currentFrame = new DrawFrame(g2d);
     }
 
-    static DrawFrames create(Graphics2D g2d)
-    {
-        if (g2d == null)
-        {
+    static DrawFrames create(Graphics2D g2d) {
+        if (g2d == null) {
             throw new IllegalArgumentException("Graphics2D can't be null.");
         }
 
         return new DrawFrames(g2d);
     }
 
-    public void newFrame()
-    {
+    public void newFrame() {
         frames.push(currentFrame);
         currentFrame = currentFrame.duplicate();
     }
 
-    public boolean varExists(String var)
-    {
+    public boolean varExists(String var) {
         if (var == null || var.isBlank())
             throw new IllegalArgumentException("Var can't be blank.");
 
         return currentFrame.vars.ints.containsKey(var) || currentFrame.vars.colors.containsKey(var);
     }
 
-    public boolean varIntExists(String var)
-    {
+    public boolean varIntExists(String var) {
         if (var == null || var.isBlank())
             throw new IllegalArgumentException("Var can't be blank.");
 
         return currentFrame.vars.ints.containsKey(var);
     }
 
-    public boolean varColorExists(String var)
-    {
+    public boolean varColorExists(String var) {
         if (var == null || var.isBlank())
             throw new IllegalArgumentException("Var can't be blank.");
 
         return currentFrame.vars.colors.containsKey(var);
     }
 
-    public void varInt(String var, int value)
-    {
+    public void varInt(String var, int value) {
         if (var == null || var.isBlank())
             throw new IllegalArgumentException("Var can't be blank.");
 
         currentFrame.vars.ints.put(var, value);
     }
 
-    public void varColor(String var, Color value)
-    {
+    public void varColor(String var, Color value) {
         if (var == null || var.isBlank())
             throw new IllegalArgumentException("Var can't be blank.");
         if (value == null)
@@ -87,8 +77,7 @@ public final class DrawFrames
         currentFrame.vars.colors.put(var, value);
     }
 
-    public int varInt(String var)
-    {
+    public int varInt(String var) {
         if (var == null || var.isBlank())
             throw new IllegalArgumentException("Var can't be blank.");
 
@@ -98,8 +87,7 @@ public final class DrawFrames
         return currentFrame.vars.ints.get(var);
     }
 
-    public Color varColor(String var)
-    {
+    public Color varColor(String var) {
         if (var == null || var.isBlank())
             throw new IllegalArgumentException("Var can't be blank.");
 
@@ -109,88 +97,73 @@ public final class DrawFrames
         return currentFrame.vars.colors.get(var);
     }
 
-    public void brushColor(Color color)
-    {
+    public void brushColor(Color color) {
         if (color == null)
             throw new IllegalArgumentException("Color can't be blank.");
 
         currentFrame.brush.color = color;
     }
 
-    public Color brushColor()
-    {
+    public Color brushColor() {
         return currentFrame.brush.color;
     }
 
-    public void brushFill(boolean fill)
-    {
+    public void brushFill(boolean fill) {
         currentFrame.brush.fill = fill;
     }
 
-    public boolean brushFill()
-    {
+    public boolean brushFill() {
         return currentFrame.brush.fill;
     }
 
-    public void brushThickness(int thickness)
-    {
+    public void brushThickness(int thickness) {
         if (thickness <= 0)
             throw new IllegalArgumentException("Thickness can't be negative.");
 
         currentFrame.brush.thickness = thickness;
     }
 
-    public int brushThickness()
-    {
+    public int brushThickness() {
         return currentFrame.brush.thickness;
     }
 
-    public void modeUnion(boolean value)
-    {
+    public void modeUnion(boolean value) {
         currentFrame.modeFlags.union = value;
     }
 
-    public boolean modeUnion()
-    {
+    public boolean modeUnion() {
         return currentFrame.modeFlags.union;
     }
 
-    public void modeRepeat(boolean value)
-    {
+    public void modeRepeat(boolean value) {
         currentFrame.modeFlags.repeat = value;
     }
 
-    public boolean modeRepeat()
-    {
+    public boolean modeRepeat() {
         return currentFrame.modeFlags.repeat;
     }
 
-    public int random(int bound)
-    {
+    public int random(int bound) {
         if (bound <= 0)
             throw new IllegalArgumentException("Bound can't be negative.");
 
         return currentFrame.random.nextInt(bound);
     }
 
-    public Graphics2D g2d()
-    {
+    public Graphics2D g2d() {
         return currentFrame.g2d;
     }
 
-    public DrawFrame disposeFrame()
-    {
+    public DrawFrame disposeFrame() {
         currentFrame = frames.pop();
-        if (currentFrame == null)
-        {
+        if (currentFrame == null) {
             throw new IllegalStateException("VM error. The first frame has been disposed.");
         }
 
         return currentFrame;
     }
 
-    private static class DrawFrame
-    {
+    private static class DrawFrame {
         final Graphics2D g2d;
 
         final Vars vars;
@@ -198,8 +171,7 @@ public final class DrawFrames
         final Brush brush;
         final Random random;
 
-        private DrawFrame(Graphics2D g2d)
-        {
+        private DrawFrame(Graphics2D g2d) {
             this.g2d = g2d;
             this.vars = new Vars();
             this.modeFlags = new ModeFlags();
@@ -207,8 +179,7 @@ public final class DrawFrames
             this.random = new Random();
         }
 
-        private DrawFrame(DrawFrame drawFrame)
-        {
+        private DrawFrame(DrawFrame drawFrame) {
             this.g2d = drawFrame.g2d;
             this.vars = new Vars(drawFrame.vars);
             this.modeFlags = new ModeFlags(drawFrame.modeFlags);
@@ -216,64 +187,54 @@ public final class DrawFrames
             this.random = drawFrame.random;
         }
 
-        private DrawFrame duplicate()
-        {
+        private DrawFrame duplicate() {
             return new DrawFrame(this);
         }
     }
 
-    public static final class Brush
-    {
+    public static final class Brush {
         private Color color;
         private int thickness;
         private boolean fill;
 
-        private Brush()
-        {
+        private Brush() {
             this.color = Color.BLACK;
             this.thickness = 1;
             this.fill = false;
         }
 
-        private Brush(Brush brush)
-        {
+        private Brush(Brush brush) {
             this.color = brush.color;
             this.thickness = brush.thickness;
             this.fill = brush.fill;
         }
     }
 
-    private static final class ModeFlags
-    {
+    private static final class ModeFlags {
         private boolean union;
         private boolean repeat;
 
-        private ModeFlags()
-        {
+        private ModeFlags() {
             this.union = false;
             this.repeat = false;
         }
 
-        private ModeFlags(ModeFlags modeFlags)
-        {
+        private ModeFlags(ModeFlags modeFlags) {
             this.union = modeFlags.union;
             this.repeat = modeFlags.repeat;
         }
     }
 
-    private static class Vars
-    {
+    private static class Vars {
         private final HashMap<String, Integer> ints;
         private final HashMap<String, Color> colors;
 
-        private Vars()
-        {
+        private Vars() {
             this.ints = new HashMap<>();
             this.colors = new HashMap<>();
         }
 
-        private Vars(Vars vars)
-        {
+        private Vars(Vars vars) {
             this.ints = new HashMap<>(vars.ints);
             this.colors = new HashMap<>(vars.colors);
         }

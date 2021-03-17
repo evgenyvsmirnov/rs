@@ -14,10 +14,8 @@ package rs.vm;
 
 import org.antlr.v4.runtime.Token;
 
-public class UnknownVariableException extends IllegalArgumentException
-{
-    public UnknownVariableException(String varName, Token srcToken)
-    {
+public class UnknownVariableException extends IllegalArgumentException {
+    public UnknownVariableException(String varName, Token srcToken) {
         super("[" + srcToken.getLine() + ", " + srcToken.getCharPositionInLine() + "] Variable " + varName +
                 " has not been defined in this context.");
     }

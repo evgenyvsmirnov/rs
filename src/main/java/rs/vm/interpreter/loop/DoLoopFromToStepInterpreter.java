@@ -32,28 +32,23 @@ import rs.vm.interpreter.InterpreterBase;
  * </pre>
  */
 public class DoLoopFromToStepInterpreter extends InterpreterBase
-        implements ICodeBlockInterpreter<DoLoopContext, ShapeResult>
-{
+        implements ICodeBlockInterpreter<DoLoopContext, ShapeResult> {
     private static final DoLoopFromToStepInterpreter INSTANCE = new DoLoopFromToStepInterpreter();
 
-    public static DoLoopFromToStepInterpreter instance()
-    {
+    public static DoLoopFromToStepInterpreter instance() {
         return INSTANCE;
     }
 
-    private DoLoopFromToStepInterpreter()
-    {
+    private DoLoopFromToStepInterpreter() {
     }
 
     @Override
-    public boolean matches(DoLoopContext ctx)
-    {
+    public boolean matches(DoLoopContext ctx) {
         return ctx.loopDef() == null && ctx.loopNDef() != null;
     }
 
     @Override
-    public ShapeResult interpret(DoLoopContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor)
-    {
+    public ShapeResult interpret(DoLoopContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor) {
         String var = ctx.loopNDef().VAR().getSymbol().getText();
 
         if (frames.varExists(var))
@@ -66,24 +61,17 @@ public class DoLoopFromToStepInterpreter extends InterpreterBase
         int step = ctx.loopNDef().STEP() != null ? evaluateInt(ctx.loopNDef().expr(2), visitor) : 1;
 
         ShapeResult shapeResult = ShapeResult.create(new ArrayList<>());
-        if (from <= to)
-        {
-            for (int i = from; i <= to; i += step)
-            {
+        if (from <= to) {
+            for (int i = from; i <= to; i += step) {
                 frames.varInt(var, i);
-                for (StepToShapeBodyContext loopbodyContext : ctx.stepToShapeBody())
-                {
+                for (StepToShapeBodyContext loopbodyContext : ctx.stepToShapeBody()) {
                     shapeResult.shapes().addAll(evaluateShapes(loopbodyContext, visitor));
                 }
             }
-        }
-        else
-        {
-            for (int i = from; i >= to; i -= step)
-            {
+        } else {
+            for (int i = from; i >= to; i -= step) {
                 frames.varInt(var, i);
-                for (StepToShapeBodyContext loopbodyContext : ctx.stepToShapeBody())
-                {
+                for (StepToShapeBodyContext loopbodyContext : ctx.stepToShapeBody()) {
                     shapeResult.shapes().addAll(evaluateShapes(loopbodyContext, visitor));
                 }
             }

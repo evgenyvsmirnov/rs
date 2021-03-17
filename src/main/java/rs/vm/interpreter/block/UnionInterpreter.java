@@ -39,33 +39,28 @@ import rs.vm.interpreter.InterpreterBase;
  *      )
  * </pre>
  */
-public class UnionInterpreter extends InterpreterBase implements ICodeBlockInterpreter<DoUnionContext, ShapeResult>
-{
+public class UnionInterpreter extends InterpreterBase implements ICodeBlockInterpreter<DoUnionContext, ShapeResult> {
     private static final UnionInterpreter INSTANCE = new UnionInterpreter();
 
-    public static UnionInterpreter instance()
-    {
+    public static UnionInterpreter instance() {
         return INSTANCE;
     }
 
-    private UnionInterpreter()
-    {
+    private UnionInterpreter() {
     }
 
     @Override
-    public boolean matches(DoUnionContext ctx)
-    {
+    public boolean matches(DoUnionContext ctx) {
         return true;
     }
 
     @Override
-    public ShapeResult interpret(DoUnionContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor)
-    {
+    public ShapeResult interpret(DoUnionContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor) {
         frames.modeUnion(true);
 
         List<ShapeWithContext> shapesUnion = new ArrayList<>();
         for (ShapeContext shape : ctx.shape())
-            shapesUnion.addAll(((ShapeResult)visitor.visit(shape)).shapes());
+            shapesUnion.addAll(((ShapeResult) visitor.visit(shape)).shapes());
 
         frames.modeUnion(false);
 

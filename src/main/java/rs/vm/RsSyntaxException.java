@@ -14,10 +14,8 @@ package rs.vm;
 
 import org.antlr.v4.runtime.Token;
 
-public class RsSyntaxException extends UnsupportedOperationException
-{
-    public RsSyntaxException(String message, Token srcToken)
-    {
+public class RsSyntaxException extends UnsupportedOperationException {
+    public RsSyntaxException(String message, Token srcToken) {
         super("[" + srcToken.getLine() + ", " + srcToken.getCharPositionInLine() + "] " + message);
     }
 }

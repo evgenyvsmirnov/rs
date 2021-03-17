@@ -20,28 +20,23 @@ import rs.vm.RSParser;
 import rs.vm.RSParser.MulDivContext;
 import rs.vm.interpreter.InterpreterBase;
 
-public class MulDivInterpreter extends InterpreterBase implements ICodeBlockInterpreter<MulDivContext, IntResult>
-{
+public class MulDivInterpreter extends InterpreterBase implements ICodeBlockInterpreter<MulDivContext, IntResult> {
     private static final MulDivInterpreter INSTANCE = new MulDivInterpreter();
 
-    public static MulDivInterpreter instance()
-    {
+    public static MulDivInterpreter instance() {
         return INSTANCE;
     }
 
-    private MulDivInterpreter()
-    {
+    private MulDivInterpreter() {
     }
 
     @Override
-    public boolean matches(MulDivContext ctx)
-    {
+    public boolean matches(MulDivContext ctx) {
         return true;
     }
 
     @Override
-    public IntResult interpret(MulDivContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor)
-    {
+    public IntResult interpret(MulDivContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor) {
         int left = evaluateInt(ctx.expr(0), visitor);
         int right = evaluateInt(ctx.expr(1), visitor);
 

@@ -29,28 +29,23 @@ import rs.vm.RSParser.RndDefVarContext;
  * </pre>
  */
 public class VarRndIntSetInterpreter extends RndIntSetInterpreterBase
-        implements ICodeBlockInterpreter<RndDefVarContext, Void>
-{
+        implements ICodeBlockInterpreter<RndDefVarContext, Void> {
     private static final VarRndIntSetInterpreter INSTANCE = new VarRndIntSetInterpreter();
 
-    public static VarRndIntSetInterpreter instance()
-    {
+    public static VarRndIntSetInterpreter instance() {
         return INSTANCE;
     }
 
-    private VarRndIntSetInterpreter()
-    {
+    private VarRndIntSetInterpreter() {
     }
 
     @Override
-    public boolean matches(RndDefVarContext ctx)
-    {
+    public boolean matches(RndDefVarContext ctx) {
         return ctx.ofSet() != null && ctx.ofSet().expr() != null && !ctx.ofSet().expr().isEmpty();
     }
 
     @Override
-    public Void interpret(RndDefVarContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor)
-    {
+    public Void interpret(RndDefVarContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor) {
         String var = ctx.VAR().getSymbol().getText();
         if (frames.varExists(var))
             throw new DuplicateVariableException(var, ctx.VAR().getSymbol());

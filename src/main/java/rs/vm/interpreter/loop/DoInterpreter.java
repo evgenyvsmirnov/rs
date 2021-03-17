@@ -27,32 +27,26 @@ import rs.vm.interpreter.InterpreterBase;
  * do ( ... )
  * </pre>
  */
-public class DoInterpreter extends InterpreterBase implements ICodeBlockInterpreter<DoLoopContext, ShapeResult>
-{
+public class DoInterpreter extends InterpreterBase implements ICodeBlockInterpreter<DoLoopContext, ShapeResult> {
     private static final DoInterpreter INSTANCE = new DoInterpreter();
 
-    public static DoInterpreter instance()
-    {
+    public static DoInterpreter instance() {
         return INSTANCE;
     }
 
-    private DoInterpreter()
-    {
+    private DoInterpreter() {
     }
 
     @Override
-    public boolean matches(DoLoopContext ctx)
-    {
+    public boolean matches(DoLoopContext ctx) {
         return ctx.loopDef() == null && ctx.loopNDef() == null;
     }
 
     @Override
-    public ShapeResult interpret(DoLoopContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor)
-    {
+    public ShapeResult interpret(DoLoopContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor) {
         ShapeResult shapeResult = ShapeResult.create(new ArrayList<>());
-        for (StepToShapeBodyContext lbCtx : ctx.stepToShapeBody())
-        {
-            shapeResult.shapes().addAll(((ShapeResult)visitor.visit(lbCtx)).shapes());
+        for (StepToShapeBodyContext lbCtx : ctx.stepToShapeBody()) {
+            shapeResult.shapes().addAll(((ShapeResult) visitor.visit(lbCtx)).shapes());
         }
 
         return shapeResult;

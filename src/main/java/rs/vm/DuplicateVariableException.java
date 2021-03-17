@@ -14,10 +14,8 @@ package rs.vm;
 
 import org.antlr.v4.runtime.Token;
 
-public class DuplicateVariableException extends IllegalArgumentException
-{
-    public DuplicateVariableException(String varName, Token srcToken)
-    {
+public class DuplicateVariableException extends IllegalArgumentException {
+    public DuplicateVariableException(String varName, Token srcToken) {
         super("[" + srcToken.getLine() + ", " + srcToken.getCharPositionInLine() + "] Variable " + varName +
                 " has already been defined.");
     }

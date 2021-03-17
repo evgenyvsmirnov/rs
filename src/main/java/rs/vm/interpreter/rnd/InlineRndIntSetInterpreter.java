@@ -27,28 +27,23 @@ import rs.vm.RSParser.OfSetContext;
  * </pre>
  */
 public class InlineRndIntSetInterpreter extends RndIntSetInterpreterBase
-        implements ICodeBlockInterpreter<InlineRndContext, IntResult>
-{
+        implements ICodeBlockInterpreter<InlineRndContext, IntResult> {
     private static final InlineRndIntSetInterpreter INSTANCE = new InlineRndIntSetInterpreter();
 
-    public static InlineRndIntSetInterpreter instance()
-    {
+    public static InlineRndIntSetInterpreter instance() {
         return INSTANCE;
     }
 
-    private InlineRndIntSetInterpreter()
-    {
+    private InlineRndIntSetInterpreter() {
     }
 
     @Override
-    public boolean matches(InlineRndContext ctx)
-    {
+    public boolean matches(InlineRndContext ctx) {
         return ctx.rndDefNoVar().ofSet() != null && !ctx.rndDefNoVar().ofSet().expr().isEmpty();
     }
 
     @Override
-    public IntResult interpret(InlineRndContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor)
-    {
+    public IntResult interpret(InlineRndContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor) {
         OfSetContext ofSet = ctx.rndDefNoVar().ofSet();
         return interpretInternal(ofSet, frames, visitor);
     }

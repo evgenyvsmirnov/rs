@@ -34,18 +34,15 @@ import rs.vm.RSLexer;
 import rs.vm.RSParser;
 import rs.vm.RsVm;
 
-public final class RsVmLauncher
-{
-    public static void main(String[] args)
-    {
+public final class RsVmLauncher {
+    public static void main(String[] args) {
         String file = (args.length == 0 ? "program.rs" : args[0]);
         if (!Files.exists(Paths.get(file)))
             throw new IllegalArgumentException("File " + file + " not found.");
 
         EventQueue.invokeLater(() -> {
             RsVmScreen screen = new RsVmScreen(g2d -> {
-                try
-                {
+                try {
                     InputStream srcStream = Files.newInputStream(Paths.get(file));
                     Lexer lexer = new RSLexer(CharStreams.fromStream(srcStream));
                     TokenStream tokenStream = new CommonTokenStream(lexer);
@@ -55,9 +52,7 @@ public final class RsVmLauncher
 
                     RsVm rsVm = new RsVm(g2d);
                     rsVm.visit(command);
-                }
-                catch (IOException e)
-                {
+                } catch (IOException e) {
                     throw new UncheckedIOException("Failed to read " + file, e);
                 }
             });
@@ -65,24 +60,20 @@ public final class RsVmLauncher
         });
     }
 
-    private RsVmLauncher()
-    {
+    private RsVmLauncher() {
     }
 
-    static class RsVmScreen extends JFrame
-    {
+    static class RsVmScreen extends JFrame {
         private static final String TITLE = "RS";
 
         private final Consumer<Graphics2D> vm;
 
-        RsVmScreen(Consumer<Graphics2D> vm)
-        {
+        RsVmScreen(Consumer<Graphics2D> vm) {
             this.vm = vm;
         }
 
         @Override
-        public void setVisible(boolean b)
-        {
+        public void setVisible(boolean b) {
             add(new RsVmPanel(vm));
 
             setTitle(TITLE);
@@ -94,25 +85,21 @@ public final class RsVmLauncher
         }
     }
 
-    private static class RsVmPanel extends JPanel
-    {
+    private static class RsVmPanel extends JPanel {
         private final Consumer<Graphics2D> vm;
 
-        RsVmPanel(Consumer<Graphics2D> vm)
-        {
+        RsVmPanel(Consumer<Graphics2D> vm) {
             this.vm = vm;
         }
 
         @Override
-        public void paintComponent(Graphics g)
-        {
+        public void paintComponent(Graphics g) {
             super.paintComponent(g);
             doDrawing(g);
         }
 
-        private void doDrawing(Graphics g)
-        {
-            vm.accept((Graphics2D)g);
+        private void doDrawing(Graphics g) {
+            vm.accept((Graphics2D) g);
         }
     }
 }

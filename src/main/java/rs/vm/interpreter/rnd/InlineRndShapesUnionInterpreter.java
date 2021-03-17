@@ -35,28 +35,23 @@ import rs.vm.RSParser.InlineRndContext;
  * </pre>
  */
 public class InlineRndShapesUnionInterpreter extends RndShapesUnionInterpreterBase
-        implements ICodeBlockInterpreter<InlineRndContext, CordsResult>
-{
+        implements ICodeBlockInterpreter<InlineRndContext, CordsResult> {
     private static final InlineRndShapesUnionInterpreter INSTANCE = new InlineRndShapesUnionInterpreter();
 
-    public static InlineRndShapesUnionInterpreter instance()
-    {
+    public static InlineRndShapesUnionInterpreter instance() {
         return INSTANCE;
     }
 
-    private InlineRndShapesUnionInterpreter()
-    {
+    private InlineRndShapesUnionInterpreter() {
     }
 
     @Override
-    public boolean matches(InlineRndContext ctx)
-    {
+    public boolean matches(InlineRndContext ctx) {
         return ctx.rndDefNoVar().doUnion() != null;
     }
 
     @Override
-    public CordsResult interpret(InlineRndContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor)
-    {
+    public CordsResult interpret(InlineRndContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor) {
         return interpretInternal(ctx.rndDefNoVar().doUnion(), frames, visitor);
     }
 }

@@ -49,34 +49,28 @@ import static java.lang.Math.toRadians;
  *      )
  * </pre>
  */
-public class LinesInterpreter extends InterpreterBase implements ICodeBlockInterpreter<LinesContext, ShapeResult>
-{
+public class LinesInterpreter extends InterpreterBase implements ICodeBlockInterpreter<LinesContext, ShapeResult> {
     private static final LinesInterpreter INSTANCE = new LinesInterpreter();
 
-    public static LinesInterpreter instance()
-    {
+    public static LinesInterpreter instance() {
         return INSTANCE;
     }
 
-    private LinesInterpreter()
-    {
+    private LinesInterpreter() {
     }
 
     @Override
-    public boolean matches(LinesContext ctx)
-    {
+    public boolean matches(LinesContext ctx) {
         return true;
     }
 
     @Override
-    public ShapeResult interpret(LinesContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor)
-    {
+    public ShapeResult interpret(LinesContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor) {
         List<ShapeCoordContext> shapeCords = ctx.shapeCoord();
 
         int[] xs = new int[shapeCords.size()];
         int[] ys = new int[shapeCords.size()];
-        for (int i = 0; i < shapeCords.size(); i++)
-        {
+        for (int i = 0; i < shapeCords.size(); i++) {
             Point point = evaluatePointFromExpressionOrRandom(shapeCords.get(i), visitor);
 
             xs[i] = point.x;
@@ -86,15 +80,13 @@ public class LinesInterpreter extends InterpreterBase implements ICodeBlockInter
 
         Polygon polygon = new Polygon(xs, ys, xs.length);
 
-        if (!frames.modeUnion() && !frames.modeRepeat())
-        {
+        if (!frames.modeUnion() && !frames.modeRepeat()) {
             frames.g2d().setColor(frames.brushColor());
             frames.g2d().setStroke(
                     new BasicStroke(frames.brushThickness(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
-            if (rotate > 0)
-            {
-                Graphics2D g2dRotate = (Graphics2D)frames.g2d().create();
+            if (rotate > 0) {
+                Graphics2D g2dRotate = (Graphics2D) frames.g2d().create();
 
                 g2dRotate.rotate(toRadians(rotate), polygon.getBounds().getCenterX(), polygon.getBounds().getCenterY());
                 if (frames.brushFill())
@@ -103,18 +95,14 @@ public class LinesInterpreter extends InterpreterBase implements ICodeBlockInter
                     g2dRotate.draw(polygon);
 
                 g2dRotate.dispose();
-            }
-            else
-            {
+            } else {
 
                 if (frames.brushFill())
                     frames.g2d().fill(polygon);
                 else
                     frames.g2d().draw(polygon);
             }
-        }
-        else
-        {
+        } else {
             if (rotate > 0 && frames.modeUnion())
                 throw new RsSemanticsException("Rotation is not allowed when shape is a part of a random definition.",
                         ctx.getStart());
@@ -126,7 +114,7 @@ public class LinesInterpreter extends InterpreterBase implements ICodeBlockInter
                         frames.brushColor(), frames.brushThickness(), frames.brushFill(),
                         rotate > 0
                                 ? new ShapeRotationContext(
-                                        rotate, polygon.getBounds().getCenterX(), polygon.getBounds().getCenterY())
+                                rotate, polygon.getBounds().getCenterX(), polygon.getBounds().getCenterY())
                                 : null)));
     }
 }

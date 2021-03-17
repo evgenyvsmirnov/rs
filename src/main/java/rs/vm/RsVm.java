@@ -59,18 +59,15 @@ import rs.vm.interpreter.shape.CurvesInterpreter;
 import rs.vm.interpreter.shape.LinesInterpreter;
 import rs.vm.interpreter.shape.OvalInterpreter;
 
-public class RsVm extends RSBaseVisitor<Object>
-{
+public class RsVm extends RSBaseVisitor<Object> {
     private final DrawFrames frames;
 
-    public RsVm(Graphics2D g2d)
-    {
+    public RsVm(Graphics2D g2d) {
         frames = DrawFrames.create(g2d);
     }
 
     @Override
-    public ShapeResult visitDoLoop(DoLoopContext ctx)
-    {
+    public ShapeResult visitDoLoop(DoLoopContext ctx) {
         if (DoInterpreter.instance().matches(ctx))
             return DoInterpreter.instance().interpret(ctx, frames, this);
         else if (DoLoopNInterpreter.instance().matches(ctx))
@@ -82,20 +79,17 @@ public class RsVm extends RSBaseVisitor<Object>
     }
 
     @Override
-    public ShapeResult visitDoDraw(DoDrawContext ctx)
-    {
+    public ShapeResult visitDoDraw(DoDrawContext ctx) {
         return DrawInterpreter.instance().interpret(ctx, frames, this);
     }
 
     @Override
-    public ShapeResult visitRotateArea(RotateAreaContext ctx)
-    {
+    public ShapeResult visitRotateArea(RotateAreaContext ctx) {
         return RotateAreaInterpreter.instance().interpret(ctx, frames, this);
     }
 
     @Override
-    public Object visitInlineRnd(InlineRndContext ctx)
-    {
+    public Object visitInlineRnd(InlineRndContext ctx) {
         if (InlineRndIntRangeInterpreter.instance().matches(ctx))
             return InlineRndIntRangeInterpreter.instance().interpret(ctx, frames, this);
         else if (InlineRndIntSetInterpreter.instance().matches(ctx))
@@ -109,13 +103,10 @@ public class RsVm extends RSBaseVisitor<Object>
     }
 
     @Override
-    public ShapeResult visitRnd(RndContext ctx)
-    {
+    public ShapeResult visitRnd(RndContext ctx) {
         frames.newFrame();
-        try
-        {
-            for (RndDefVarContext intColorVar : ctx.rndDefVar())
-            {
+        try {
+            for (RndDefVarContext intColorVar : ctx.rndDefVar()) {
                 if (VarRndIntRangeInterpreter.instance().matches(intColorVar))
                     VarRndIntRangeInterpreter.instance().interpret(intColorVar, frames, this);
                 else if (VarRndIntSetInterpreter.instance().matches(intColorVar))
@@ -126,8 +117,7 @@ public class RsVm extends RSBaseVisitor<Object>
                     throw new RsSyntaxException("Unsupported type of random definition.", intColorVar.getStart());
             }
 
-            for (RndDefCoordContext coordsVar : ctx.rndDefCoord())
-            {
+            for (RndDefCoordContext coordsVar : ctx.rndDefCoord()) {
                 if (VarRndShapesUnionInterpreter.instance().matches(coordsVar))
                     VarRndShapesUnionInterpreter.instance().interpret(coordsVar, frames, this);
                 else
@@ -138,73 +128,61 @@ public class RsVm extends RSBaseVisitor<Object>
 
             List<StepToShapeBodyContext> withRandomBody = ctx.stepToShapeBody();
             for (StepToShapeBodyContext shape : withRandomBody)
-                shapeResult.shapes().addAll(((ShapeResult)visit(shape)).shapes());
+                shapeResult.shapes().addAll(((ShapeResult) visit(shape)).shapes());
 
             return shapeResult;
-        }
-        finally
-        {
+        } finally {
             frames.disposeFrame();
         }
     }
 
     @Override
-    public ShapeResult visitDoUnion(DoUnionContext ctx)
-    {
+    public ShapeResult visitDoUnion(DoUnionContext ctx) {
         return UnionInterpreter.instance().interpret(ctx, frames, this);
     }
 
     @Override
-    public ShapeResult visitCircle(CircleContext ctx)
-    {
+    public ShapeResult visitCircle(CircleContext ctx) {
         return CircleInterpreter.instance().interpret(ctx, frames, this);
     }
 
     @Override
-    public ShapeResult visitOval(OvalContext ctx)
-    {
+    public ShapeResult visitOval(OvalContext ctx) {
         return OvalInterpreter.instance().interpret(ctx, frames, this);
     }
 
     @Override
-    public ShapeResult visitLines(LinesContext ctx)
-    {
+    public ShapeResult visitLines(LinesContext ctx) {
         return LinesInterpreter.instance().interpret(ctx, frames, this);
     }
 
     @Override
-    public ShapeResult visitCurves(CurvesContext ctx)
-    {
+    public ShapeResult visitCurves(CurvesContext ctx) {
         return CurvesInterpreter.instance().interpret(ctx, frames, this);
     }
 
     @Override
-    public Object visitParens(ParensContext ctx)
-    {
+    public Object visitParens(ParensContext ctx) {
         return visit(ctx.expr());
     }
 
     @Override
-    public IntResult visitMulDiv(MulDivContext ctx)
-    {
+    public IntResult visitMulDiv(MulDivContext ctx) {
         return MulDivInterpreter.instance().interpret(ctx, frames, this);
     }
 
     @Override
-    public IntResult visitAddSub(AddSubContext ctx)
-    {
+    public IntResult visitAddSub(AddSubContext ctx) {
         return AddSubInterpreter.instance().interpret(ctx, frames, this);
     }
 
     @Override
-    public IntResult visitInt(IntContext ctx)
-    {
+    public IntResult visitInt(IntContext ctx) {
         return IntResult.create(Integer.parseInt(ctx.INT().getText()));
     }
 
     @Override
-    public CodeBlockResult visitVar(VarContext ctx)
-    {
+    public CodeBlockResult visitVar(VarContext ctx) {
         String var = ctx.VAR().getText();
 
         if (frames.varIntExists(var))

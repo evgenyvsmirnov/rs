@@ -37,35 +37,29 @@ import rs.vm.interpreter.InterpreterBase;
  *    )
  * </pre>
  */
-public class CircleInterpreter extends InterpreterBase implements ICodeBlockInterpreter<CircleContext, ShapeResult>
-{
+public class CircleInterpreter extends InterpreterBase implements ICodeBlockInterpreter<CircleContext, ShapeResult> {
     private static final CircleInterpreter INSTANCE = new CircleInterpreter();
 
-    public static CircleInterpreter instance()
-    {
+    public static CircleInterpreter instance() {
         return INSTANCE;
     }
 
-    private CircleInterpreter()
-    {
+    private CircleInterpreter() {
     }
 
     @Override
-    public boolean matches(CircleContext ctx)
-    {
+    public boolean matches(CircleContext ctx) {
         return true;
     }
 
     @Override
-    public ShapeResult interpret(CircleContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor)
-    {
+    public ShapeResult interpret(CircleContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor) {
         List<ShapeWithContext> shapes = new ArrayList<>();
 
         final List<ShapeCoordContext> centerDefs = ctx.shapeCoord();
         final List<ShapeSizeContext> radiusDefs = ctx.shapeSize();
 
-        for (int i = 0; i < centerDefs.size(); i++)
-        {
+        for (int i = 0; i < centerDefs.size(); i++) {
             Point center = evaluatePointFromExpressionOrRandom(centerDefs.get(i), visitor);
             int radius = evaluateShapeSizeFromExpressionOrRandom(radiusDefs.get(i), visitor);
 
@@ -76,8 +70,7 @@ public class CircleInterpreter extends InterpreterBase implements ICodeBlockInte
             Ellipse2D.Double shape = new Ellipse2D.Double(
                     center.getX() - radius, center.getY() - radius,
                     radius * 2.0, radius * 2.0);
-            if (!frames.modeUnion() && !frames.modeRepeat())
-            {
+            if (!frames.modeUnion() && !frames.modeRepeat()) {
                 if (frames.brushFill())
                     frames.g2d().fill(shape);
                 else

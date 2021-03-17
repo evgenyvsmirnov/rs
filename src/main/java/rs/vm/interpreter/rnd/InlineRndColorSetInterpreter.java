@@ -27,28 +27,23 @@ import rs.vm.RSParser.InlineRndContext;
  * </pre>
  */
 public class InlineRndColorSetInterpreter extends RndColorInterpreterBase
-        implements ICodeBlockInterpreter<InlineRndContext, ColorResult>
-{
+        implements ICodeBlockInterpreter<InlineRndContext, ColorResult> {
     private static final InlineRndColorSetInterpreter INSTANCE = new InlineRndColorSetInterpreter();
 
-    public static InlineRndColorSetInterpreter instance()
-    {
+    public static InlineRndColorSetInterpreter instance() {
         return INSTANCE;
     }
 
-    private InlineRndColorSetInterpreter()
-    {
+    private InlineRndColorSetInterpreter() {
     }
 
     @Override
-    public boolean matches(InlineRndContext ctx)
-    {
+    public boolean matches(InlineRndContext ctx) {
         return ctx.rndDefNoVar().ofSet() != null && !ctx.rndDefNoVar().ofSet().color().isEmpty();
     }
 
     @Override
-    public ColorResult interpret(InlineRndContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor)
-    {
+    public ColorResult interpret(InlineRndContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor) {
         return interpretInternal(ctx.rndDefNoVar().ofSet(), frames);
     }
 }

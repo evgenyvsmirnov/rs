@@ -24,33 +24,28 @@ import rs.vm.RsSemanticsException;
 import rs.vm.ShapeDataContainers.ShapeWithContext;
 import rs.vm.interpreter.InterpreterBase;
 
-abstract class RndShapesUnionInterpreterBase extends InterpreterBase
-{
-    protected final CordsResult interpretInternal(DoUnionContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor)
-    {
-        ShapeResult shapesForPoint = (ShapeResult)visitor.visit(ctx);
+abstract class RndShapesUnionInterpreterBase extends InterpreterBase {
+    protected final CordsResult interpretInternal(DoUnionContext ctx, DrawFrames frames, RSBaseVisitor<Object> visitor) {
+        ShapeResult shapesForPoint = (ShapeResult) visitor.visit(ctx);
 
         Point randomPoint = getRandomPointWithinShapes(shapesForPoint, ctx, frames);
         return CordsResult.create(randomPoint.x, randomPoint.y);
     }
 
-    private Point getRandomPointWithinShapes(ShapeResult result, DoUnionContext doUnion, DrawFrames frames)
-    {
+    private Point getRandomPointWithinShapes(ShapeResult result, DoUnionContext doUnion, DrawFrames frames) {
         Rectangle2D union = getBoundaryRectangle(result, doUnion);
 
-        int width = (int)union.getBounds2D().getWidth();
-        int height = (int)union.getBounds2D().getHeight();
+        int width = (int) union.getBounds2D().getWidth();
+        int height = (int) union.getBounds2D().getHeight();
 
         if (width == 0 || height == 0)
             throw new RsSemanticsException("Shape sizes for random coordinates can't be zero.", doUnion.getStart());
 
-        while (true)
-        {
-            int x = (int)(union.getBounds2D().getX() + (width > 0 ? frames.random(width) : 0));
-            int y = (int)(union.getBounds2D().getY() + (height > 0 ? frames.random(height) : 0));
+        while (true) {
+            int x = (int) (union.getBounds2D().getX() + (width > 0 ? frames.random(width) : 0));
+            int y = (int) (union.getBounds2D().getY() + (height > 0 ? frames.random(height) : 0));
 
-            for (ShapeWithContext shapeWithContext : result.shapes())
-            {
+            for (ShapeWithContext shapeWithContext : result.shapes()) {
                 if (shapeWithContext.shape().contains(x, y))
                     return new Point(x, y);
             }

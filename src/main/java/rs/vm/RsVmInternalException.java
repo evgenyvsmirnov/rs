@@ -12,10 +12,8 @@
 // limitations under the License.
 package rs.vm;
 
-public class RsVmInternalException extends RuntimeException
-{
-    public RsVmInternalException(String message)
-    {
+public class RsVmInternalException extends RuntimeException {
+    public RsVmInternalException(String message) {
         super(message);
     }
 }
